@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * ページパーツの取得ウィジェット
@@ -7,7 +7,7 @@
 class TT_Page_Parts_Widget extends WP_Widget
 {
   /**
-   * Widgetを登録する
+   * ウィジェットを登録する
    */
   function __construct()
   {
@@ -21,31 +21,45 @@ class TT_Page_Parts_Widget extends WP_Widget
     );
   }
 
+
   /**
-   * 表側の Widget を出力する
+   * サイトにウィジェットを出力する
    *
-   * @param array $args      'register_sidebar'で設定した「before_title, after_title, before_widget, after_widget」が入る
-   * @param array $instance  Widgetの設定項目
+   * @param array $args register_sidebarで設定した項目が入る
+   * [before_title] = タイトル前に出力する要素
+   * [after_title] = タイトル後に出力する要素
+   * [before_widget] = ウィジェット前に出力する要素
+   * [after_widget] = ウィジェット後に出力する要素
+   * @param array $instance Widgetの設定項目
+   * [target_page_part_id] = 読み込むページパーツのID
    */
   public function widget($args, $instance)
   {
-    $page_id = $instance['target_page_id'];
+    // 読み込むページパーツのID
+    $page_id = $instance['target_page_part_id'];
+
+    // 'before_widget'を出力
     echo $args['before_widget'];
 
+    // ページパーツを取得
     $post = get_post($page_id);
 
+    // ページパーツの中身を出力
     echo '<article class="article '. esc_attr($post->post_name). '">';
     echo apply_filters('the_content', $post->post_content);
     echo '</article>';
 
+    // 'after_widget'を出力
     echo $args['after_widget'];
   }
 
-  /** Widget管理画面を出力する
+
+  /**
+   * 管理画面「外観」＞「ウィジェット」にフォームを出力する
    *
-   * @param array $instance 
+   * @param array $instance
    * [title] = ウィジェットタイトル
-   * [target_page__id] = 表示するページのID
+   * [target_page_part_id] = 表示するページパーツのID
    * @return string|void
    */
   public function form($instance)
@@ -56,16 +70,17 @@ class TT_Page_Parts_Widget extends WP_Widget
       <input type="text" id="<?= $this->get_field_id('title'); ?>" name="<?= $this->get_field_name('title'); ?>" value="<?= esc_attr($instance['title']); ?>">
     </p>
     <p> <!-- ページパーツの選択 -->
-      <label for="<?php echo $this->get_field_id(('target_page_id')); ?>">出力ページパーツ:</label>
+      <label for="<?php echo $this->get_field_id(('target_page_part_id')); ?>">出力ページパーツ:</label>
       <?php
-        $selected = (isset($instance['target_page_id'])) ? $instance['target_page_id'] : '';
+        $selected = (isset($instance['target_page_part_id'])) ? $instance['target_page_part_id'] : '';
         $args = array(
           'post_type' => 'tt_page_parts',
         );
+        // カスタム投稿タイプ「ページパーツ」からリストを読み込む
         $customPosts = get_posts($args);
       ?>
       <!-- ドロップダウンメニュー -->
-      <select name="<?php echo $this->get_field_name('target_page_id') ?>" id="<?php echo $this->get_field_id('target_page_id') ?>" >
+      <select name="<?php echo $this->get_field_name('target_page_part_id') ?>" id="<?php echo $this->get_field_id('target_page_part_id') ?>" >
         <?php if($customPosts): ?>
           <?php foreach($customPosts as $customPost): ?>
             <option value="<?php echo $customPost->ID; ?>" <?php if((int)$customPost->ID === (int)$selected) echo 'selected'; ?>>
@@ -73,6 +88,7 @@ class TT_Page_Parts_Widget extends WP_Widget
               <?php echo esc_html(wp_strip_all_tags($customPost->post_title, true)); ?>
             </option>
           <?php endforeach; ?>
+        <!-- カスタム投稿タイプ「ページパーツ」に投稿が無い場合 -->
         <?php else: ?>
           <option value="" disabled>作成されていません</option>
         <?php endif; ?>
@@ -81,22 +97,9 @@ class TT_Page_Parts_Widget extends WP_Widget
     <?php
   }
 
-  /** 新しい設定データが適切なデータかどうかをチェックする。
-   * 必ず$instanceを返す。さもなければ設定データは保存（更新）されない。
-   *
-   * @param array $new_instance  form()から入力された新しい設定データ
-   * @param array $old_instance  前回の設定データ
-   * @return array               保存（更新）する設定データ。falseを返すと更新しない。
-   */
-  function update($new_instance, $old_instance)
-  {
-    // if(!filter_var($new_instance['email'],FILTER_VALIDATE_EMAIL)){
-    //     return false;
-    // }
-    return $new_instance;
-  }
 }
 
 add_action('widgets_init', function () {
-  register_widget('TT_Page_Parts_Widget');  //WidgetをWordPressに登録する
+  //ウィジェットをWordPressに登録する
+  register_widget('TT_Page_Parts_Widget');
 });

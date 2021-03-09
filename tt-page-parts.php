@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: TT Page-Parts
-Plugin URI:
-Description: エディタで作成したページパーツを、ウィジェットとしてページに配置することができます。
+Plugin URI: https://github.com/ken3986/tt-page-parts
+Description: エディタで作成したページパーツを、ウィジェットとしてページに配置することができるプラグインです。
 Author: Ken
-Author URI:
-Version: 0.9
+Author URI: https://github.com/ken3986/tt-page-parts
+Version: 1.0.0
 */
 
 if( ! class_exists('TTPageParts') ) :

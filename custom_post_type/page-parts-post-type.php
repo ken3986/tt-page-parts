@@ -6,9 +6,13 @@
 
 function custom_post_type_tt_page_parts()
 {
-  $pluginName = 'tt_page_parts';
+  // カスタム投稿タイプ名
+  $customPostTypeName = 'tt_page_parts';
 
+  // 管理画面に表示するカスタム投稿タイプ名
   $displayName = 'ページパーツ';
+
+  // カスタム投稿ラベル
   $labels = array(
     'name' => $displayName,
     'singlar_name' => '新しい' . $displayName,
@@ -18,9 +22,10 @@ function custom_post_type_tt_page_parts()
     'search_items' => $displayName . 'を検索',
   );
 
-  register_post_type($pluginName, array(
-    'label' => $pluginName,
-    'labels' => $labels,
+  // カスタム投稿タイプを設定
+  register_post_type($customPostTypeName, array(
+    'label' => $customPostTypeName,
+    'labels' => $labels, //カスタム投稿ラベル
     'description' => 'ページに挿入して表示するパーツ用の投稿タイプです。',
     'exclude_from_search' => true,
     'public' => true,
@@ -31,8 +36,9 @@ function custom_post_type_tt_page_parts()
     'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
   ));
 
-  register_taxonomy_for_object_type('category', $pluginName);
-  register_taxonomy_for_object_type('post_tag', $pluginName);
+  // 通常投稿の「カテゴリー」「タグ」機能を取り込み
+  register_taxonomy_for_object_type('category', $customPostTypeName);
+  register_taxonomy_for_object_type('post_tag', $customPostTypeName);
 }
 add_action('init', 'custom_post_type_tt_page_parts');
 
