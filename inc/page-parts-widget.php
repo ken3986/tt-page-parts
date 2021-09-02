@@ -14,7 +14,7 @@ if (! class_exists('TTPagePartsWidget')) :
         'tt_page_parts_widget', // Base ID
         '[TT] ページパーツ表示', // Name
         array(
-          'classname' => 'tt_page__parts_widget',
+          'classname' => 'tt_page_parts_widget',
           'description' => '指定したページパーツの内容を表示します。',
         ) // Args
       );
@@ -61,10 +61,11 @@ if (! class_exists('TTPagePartsWidget')) :
      * @return string|void
      */
     public function form($instance) {
+      $widget_title = (isset($instance['title'])) ? $instance['title'] : '';
       ?>
       <p> <!-- タイトル -->
         <label for="<?= $this->get_field_id('title'); ?>">タイトル</label>
-        <input type="text" id="<?= $this->get_field_id('title'); ?>" name="<?= $this->get_field_name('title'); ?>" value="<?= esc_attr($instance['title']); ?>">
+        <input type="text" id="<?= $this->get_field_id('title'); ?>" name="<?= $this->get_field_name('title'); ?>" value="<?= esc_attr($widget_title); ?>">
       </p>
       <p> <!-- ページパーツの選択 -->
         <label for="<?php echo $this->get_field_id(('target_page_part_id')); ?>">出力ページパーツ:</label>
