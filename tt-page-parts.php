@@ -5,7 +5,7 @@ Plugin URI: https://github.com/ken3986/tt-page-parts
 Description: エディタで作成したページパーツを、ウィジェットとしてページに配置することができるプラグインです。
 Author: Ken
 Author URI: https://github.com/ken3986/tt-page-parts
-Version: 1.0.3
+Version: 1.0.4
 */
 
 if(! class_exists('TTPageParts')) :
