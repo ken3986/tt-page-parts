@@ -73,10 +73,12 @@ if (! class_exists('TTPagePartsWidget')) :
           $selected = (isset($instance['target_page_part_id'])) ? $instance['target_page_part_id'] : '';
           $args = array(
             'post_type' => 'tt_page_parts',
+            'posts_per_page' => -1,
           );
           // カスタム投稿タイプ「ページパーツ」からリストを読み込む
           $customPosts = get_posts($args);
         ?>
+
         <!-- ドロップダウンメニュー -->
         <select name="<?php echo $this->get_field_name('target_page_part_id') ?>" id="<?php echo $this->get_field_id('target_page_part_id') ?>" >
           <?php if($customPosts): ?>
